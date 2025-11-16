@@ -1,5 +1,5 @@
 import React from "react";
-import { textAreaFieldDefaultCss, textAreaFieldDefaultPlaceholder } from "@/config/components/textAreaField";
+import { textareaFieldDefaultCss, textareaFieldDefaultPlaceholder } from "@/config/components/textarea";
 
 interface TextAreaFieldProps {
   label: string;
@@ -18,16 +18,16 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
   errorTextClass, readonly
  }) => {
   return (<div>
-    <label className={labelClassName || textAreaFieldDefaultCss.label}>{label}</label>
+    <label className={labelClassName || textareaFieldDefaultCss.label}>{label}</label>
     <textarea
       disabled={readonly}
-      placeholder={placeholder || textAreaFieldDefaultPlaceholder}
+      placeholder={placeholder || textareaFieldDefaultPlaceholder}
       onChange={(e) => onChange(e.target.value)}
-      className={!!errorMessage ? (errorTextClass || textAreaFieldDefaultCss.errorInput) : (textAreaClassName || textAreaFieldDefaultCss.textArea)}>
+      className={!!errorMessage ? (errorTextClass || textareaFieldDefaultCss.errorInput) : (textAreaClassName || textareaFieldDefaultCss.textArea)}>
     </textarea>
     {!!errorMessage
     ? (
-      <p className={errorTextClass || textAreaFieldDefaultCss.errorText} >
+      <p className={errorTextClass || textareaFieldDefaultCss.errorText} >
         {errorMessage}
       </p>
     ) : null}
