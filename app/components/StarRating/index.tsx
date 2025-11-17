@@ -3,7 +3,7 @@ import SvgStar from "@/assets/StarIcon";
 import { starRatingDefaultTotalAmount, starRatingDefaultCss } from "@/config/components/starRating";
 
 interface StarRatingProps {
-  label: string;
+  label?: string;
   value: number | undefined;
   totalStars?: number;
   starWrapperclassName?: string;
@@ -11,7 +11,7 @@ interface StarRatingProps {
   iconClassName?: string;
   errorMessage?: string;
   errorTextClass?: string;
-  onChange: (value: number) => void;
+  onChange?: (value: number) => void;
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ 
@@ -20,10 +20,14 @@ const StarRating: React.FC<StarRatingProps> = ({
 }) => {
   return (
     <div>
-      <label className={labelClass || starRatingDefaultCss.label}>{label}</label>
+      {
+        label
+        ? <label className={labelClass || starRatingDefaultCss.label}>{label}</label>
+        : null
+      }
       <div className={starWrapperclassName || starRatingDefaultCss.ratingWrapper}>
         {Array.from({ length: totalStars || starRatingDefaultTotalAmount }, (_, index) => (
-          <div key={index} onClick={() => index + 1 !== value && onChange(index + 1)} className={iconClassName || starRatingDefaultCss.iconWrapper}>
+          <div key={index} onClick={() => typeof onChange === 'function' && index + 1 !== value && onChange(index + 1)} className={iconClassName || starRatingDefaultCss.iconWrapper}>
             <SvgStar active={index < value} />
           </div>
         ))}
