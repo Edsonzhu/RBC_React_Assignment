@@ -1,5 +1,5 @@
 import React from "react";
-import SvgStar from "./svgStar";
+import SvgStar from "@/assets/StarIcon";
 import { starRatingDefaultTotalAmount, starRatingDefaultCss } from "@/config/components/starRating";
 
 interface StarRatingProps {
