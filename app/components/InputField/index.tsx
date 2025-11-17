@@ -1,4 +1,4 @@
-import React, { type ChangeEvent } from "react";
+import React from "react";
 import { inputFieldDefaultCss, inputFieldDefaultType } from "@/config/components/inputField";
 
 interface InputFieldProps {
@@ -12,17 +12,17 @@ interface InputFieldProps {
   labelClass?: string;
   inputType?: string;
   readonly?: boolean;
+  value?: string;
   onChange: (value: string) => void;
 }
 
 const InputField: React.FC<InputFieldProps> = (props) => {
-
   return (
     <div>
-      <label className={props.labelClass || inputFieldDefaultCss.label}>{props.label}</label>
+      <label  className={props.labelClass || inputFieldDefaultCss.label} htmlFor={props.id} >{props.label}</label>
       <input disabled={props.readonly} id={props.id} type={props.inputType || inputFieldDefaultType} placeholder={props.placeholder || ""} 
         className={!!props.errorMessage ? (props.errorInputClass || inputFieldDefaultCss.errorInput) : (props.inputClass || inputFieldDefaultCss.input)}
-        onChange={(e) => props.onChange(e.target.value)}
+        onChange={(e) => props.onChange(e.target.value)} value={props.value}
         />
       {!!props.errorMessage
       ? (
