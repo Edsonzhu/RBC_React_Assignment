@@ -18,7 +18,7 @@ import Button, { ButtonTypes } from "@/components/Button";
 import { checkRegex, generateId } from "@/utils";
 
 interface ReviewFormProps {
-  review: ReviewProps | null;
+  review?: ReviewProps;
   onSubmit: (review: ReviewProps) => void;
 }
 
@@ -38,15 +38,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ review, onSubmit }) => {
     return reviewObj[fieldName];
   }
 
-  const addError = (fieldName: string, message: string) => {
-    setErrorObj((prevErrorObj) => ({
-      ...prevErrorObj,
-      [fieldName]: message,
-    }));
-  }
-
   const isFormValid = (): boolean => {
-    setErrorObj({});
+    const err = {} as { [key: string]: string };
 
     reviewFormFields.forEach((field) => {
       if (field.validation && field.errorMessage && field.component !== reviewFormAllowedComponents.Select)
@@ -54,35 +47,39 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ review, onSubmit }) => {
         const fieldName: string = field.name;
         if (!(fieldName in reviewObj))
         {
-          addError(fieldName, field.errorMessage);
+          err[fieldName] = field.errorMessage;
           return;
         }
 
         const fieldValue = getFieldValue(fieldName as keyof ReviewProps);
         if (!checkRegex(fieldValue, field.validation))
         {
-          addError(fieldName, field.errorMessage);
+          err[fieldName] = field.errorMessage;
         }
       }
       else if (field.component === reviewFormAllowedComponents.Select)
       {
         const selectOptions = field.options || [];
-        selectOptions.forEach(({ requirement = [] }) => {
-          requirement.forEach(({ field, validation, errorMessage }) => {
-            if (!(field in reviewObj) && validation && errorMessage)
-            {
-              const fieldValue = getFieldValue(field as keyof ReviewProps);
-              if (!checkRegex(fieldValue, validation))
+        selectOptions.forEach(({ value, requirement = [] }) => {
+          if (value === reviewObj[field.name as keyof ReviewProps])
+          {
+            requirement.forEach(({ field, validation, errorMessage }) => {
+              if (validation && errorMessage)
               {
-                addError(field, errorMessage);
+                const fieldValue = getFieldValue(field as keyof ReviewProps);
+                if (!checkRegex(fieldValue, validation))
+                {
+                  err[field] = errorMessage;
+                }
               }
-            }
-          });
+            });
+          }
         });
       }
     });
 
-    return Object.keys(errorObj).length === 0;
+    setErrorObj(err);
+    return Object.keys(err).length === 0;
   }
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -113,6 +110,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ review, onSubmit }) => {
                 labelClass={reviewFormCss.inputField.labelClass}
                 inputType={field.type}
                 onChange={(value: string) => handleInputChange(field.name, value)}
+                value={reviewObj[field.name as keyof ReviewProps] as string}
                 key={index}
                 />
             );
@@ -124,6 +122,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ review, onSubmit }) => {
                 textAreaClassName={reviewFormCss.textareaField.textAreaClass}
                 errorTextClass={reviewFormCss.textareaField.errorTextClass}
                 onChange={(value: string) => handleInputChange(field.name, value)}
+                value={reviewObj[field.name as keyof ReviewProps] as string}
                 key={index}
                 />
             );
@@ -135,7 +134,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ review, onSubmit }) => {
                 onChange={(value: string) => handleInputChange(field.name, value)}
                 labelClassName={reviewFormCss.select.labelClass}
                 selectClassName={reviewFormCss.select.selectClass}
-                defaultValue={reviewObj.status}
+                defaultValue={reviewObj[field.name as keyof ReviewProps] as string}
                 key={index}
                 />
             );
@@ -143,7 +142,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ review, onSubmit }) => {
             return (
               <StarRating
                 label={field.label}
-                value={reviewObj.reviewRating}
+                value={reviewObj[field.name as keyof ReviewProps] as number}
                 totalStars={field.totalStars}
                 onChange={(value: number) => handleInputChange(field.name, value)}
                 labelClass={reviewFormCss.starRating.labelClass}
@@ -158,7 +157,11 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ review, onSubmit }) => {
             throw new Error(`Unknown component type: ${field.component}`);
         }
       })}
-      <Button type={ButtonTypes.SUBMIT} label={isCreateMode ? reviewFormText.createButtonLabel : reviewFormText.updateButtonLabel} />
+      <Button
+        type={ButtonTypes.SUBMIT}
+        label={isCreateMode ? reviewFormText.createButtonLabel : reviewFormText.updateButtonLabel}
+        className={reviewFormCss.button.class}
+      />
     </form>
   );
 }
