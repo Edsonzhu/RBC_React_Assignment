@@ -1,10 +1,10 @@
 import React from "react";
 
-interface SvgStarProps {
+interface StarRatingProps {
   active: boolean;
 }
 
-const StarRating: React.FC<SvgStarProps> = ({ active }) => {
+const StarRating: React.FC<StarRatingProps> = ({ active }) => {
   // Values here are hardcoded and will not be able to be changed from external configuration
   // since this is a SVG component specifically for the star icon.
   // SVG path for a star icon
