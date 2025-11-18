@@ -103,7 +103,7 @@ const PopulatedTable: React.FC<PopulatedTableProps> = ({ reviewsList, onClickUpd
                         <td key={name} className={populateTableCss.tbodyTd}>
                           {
                             component && component === reviewFormAllowedComponents.StarRating
-                            ? <StarRating value={review[name as keyof ReviewProps] !== undefined ? review[name as keyof ReviewProps] as number : 0} onChange={() => {}} />
+                            ? <StarRating iconClassName={populateTableCss.icon} value={review[name as keyof ReviewProps] !== undefined ? review[name as keyof ReviewProps] as number : 0} onChange={() => {}} />
                             : review[name as keyof ReviewProps] !== undefined ? review[name as keyof ReviewProps] : 'N/A'
                           }
                         </td>
@@ -212,6 +212,10 @@ const ReviewTable: React.FC = () => {
           </div>
         </div>
         <div className={reviewTableCss.headerWraper}>
+          <Button label={reviewTableText.resetFilter} 
+            className={reviewTableBtnCss.actionableBtn}
+            onClick={handleResetFilterClick}
+          />
           <AddReviewButton onClick={() => handleOpenModal()} />
         </div>
       </div>

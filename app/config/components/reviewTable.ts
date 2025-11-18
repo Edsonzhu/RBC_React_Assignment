@@ -25,6 +25,7 @@ export const populateTableCss = {
   tbodyTdIconRed: "text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none cursor-pointer",
   tbodyTdIconYellow: "text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none cursor-pointer",
   actionableBtn: "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
+  icon: "cursor-default",
 }
 
 export const reviewTableCss = {
@@ -37,6 +38,7 @@ export const reviewTableCss = {
 
 export const reviewTableText = {
   addReview: "Add review",
+  resetFilter: "Reset filter",
   noReview: "No review available",
   reviews: "reviews",
   resetText: "Click here to reset filter",
