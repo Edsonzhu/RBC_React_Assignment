@@ -1,4 +1,4 @@
-# RBC Assignment - Documentation
+# Assignment - Documentation
 
 ## Overview
 A React-based review management application built with React Router 7, TypeScript, and Tailwind CSS. Users can create, read, update, and delete (CRUD) reviews with filtering, rating, and status tracking capabilities.
